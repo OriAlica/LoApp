@@ -1,6 +1,7 @@
 workflows:
   react-native-ios:
     name: React Native iOS Build
+    instance_type: mac_mini_m2         
     environment:
       vars:
         APP_NAME: "lo-scanitem-app"
@@ -8,8 +9,8 @@ workflows:
       xcode: latest
       cocoapods: default
       flutter: stable
-      groups:       # <-- add your group here, alongside vars and others
-        - expo-token
+      groups:
+        - expo-token                  
     scripts:
       - name: Install dependencies
         script: |
