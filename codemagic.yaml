@@ -24,3 +24,8 @@ workflows:
       email:
         recipients:
           - maggiorealica.kartiyanta@wingscorp.com
+    workflows:
+      workflow-name:
+        environment:
+          groups:
+            - expo-token
