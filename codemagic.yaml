@@ -8,6 +8,8 @@ workflows:
       xcode: latest
       cocoapods: default
       flutter: stable
+      groups:       # <-- add your group here, alongside vars and others
+        - expo-token
     scripts:
       - name: Install dependencies
         script: |
@@ -24,8 +26,3 @@ workflows:
       email:
         recipients:
           - maggiorealica.kartiyanta@wingscorp.com
-    workflows:
-      workflow-name:
-        environment:
-          groups:
-            - expo-token
