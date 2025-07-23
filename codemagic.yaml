@@ -20,7 +20,7 @@ workflows:
         script: npm install -g eas-cli
       - name: Build iOS app
         script: |
-          eas build --platform ios --non-interactive --profile production
+          eas build --platform ios --profile production --no-cache
     artifacts:
       - build/ios/**/*.ipa
     publishing:
