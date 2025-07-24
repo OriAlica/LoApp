@@ -12,7 +12,8 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.maggiore.loscanitemapp",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSCameraUsageDescription": "This app uses the camera to scan QR codes."
       }
     },
     "android": {
