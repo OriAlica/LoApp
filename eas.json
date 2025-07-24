@@ -19,10 +19,10 @@
     },
     "production": {
       "autoIncrement": true,
-      "distribution": "store",
-      "ios": {
-        "simulator": true
-      }
+      "distribution": "internal",
+        "ios": {
+          "simulator": false
+        }
     }
   },
   "submit": {
