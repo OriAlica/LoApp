@@ -30,13 +30,13 @@ workflows:
           xcodebuild -workspace ios/loscanitemapp.xcworkspace -list
       - name: Build archive
         script: |
-          xcodebuild -workspace ios/*.xcworkspace \
-                     -scheme $APP_NAME \
-                     -sdk iphoneos \
-                     -configuration Release \
-                     -allowProvisioningUpdates \
-                     -archivePath $CM_BUILD_DIR/build/$APP_NAME.xcarchive \
-                     clean archive
+          xcodebuild -workspace ios/loscanitemapp.xcworkspace \
+                    -scheme loscanitemapp \
+                    -sdk iphoneos \
+                    -configuration Release \
+                    -allowProvisioningUpdates \
+                    -archivePath $CM_BUILD_DIR/build/loscanitemapp.xcarchive \
+                    clean archive
       - name: Export .ipa
         script: |
           # Use exportOptions.plist with method "development" or "ad-hoc"
