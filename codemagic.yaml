@@ -1,26 +1,34 @@
 workflows:
   react-native-ios:
-    name: React Native iOS Build
-    instance_type: mac_mini_m2         
+    name: React Native iOS Build (Native Xcode)
+    instance_type: mac_mini_m2
     environment:
       vars:
         APP_NAME: "lo-scanitem-app"
       node: 20.11.1
       xcode: latest
       cocoapods: default
-      flutter: stable
-      groups:
-        - expo-token                  
     scripts:
-      - name: Install dependencies
+      - name: Install node modules and CocoaPods
         script: |
-          npm install -g expo-cli
           npm ci
-      - name: Install eas-cli
-        script: npm install -g eas-cli
-      - name: Build iOS app
+          cd ios
+          pod install
+      - name: Build .ipa with Xcode
         script: |
-          eas build --platform ios --profile production --non-interactive
+          xcodebuild \
+            -workspace ios/loscanitemapp.xcworkspace \
+            -scheme loscanitemapp \
+            -configuration Release \
+            -sdk iphoneos \
+            -archivePath $CM_BUILD_DIR/build/loscanitemapp.xcarchive \
+            clean archive
+
+          xcodebuild \
+            -exportArchive \
+            -archivePath $CM_BUILD_DIR/build/loscanitemapp.xcarchive \
+            -exportOptionsPlist ios/exportOptions.plist \
+            -exportPath $CM_BUILD_DIR/build/ios
     artifacts:
       - build/ios/**/*.ipa
     publishing:
