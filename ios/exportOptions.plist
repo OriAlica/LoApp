@@ -9,7 +9,6 @@
   <key>provisioningProfiles</key>
   <dict>
     <key>com.maggiore.loscanitemapp</key>
-    <string>Your_Provisioning_Profile_Name_Here</string> <!-- replace with your provisioning profile -->
   </dict>
   <key>compileBitcode</key>
   <false/>

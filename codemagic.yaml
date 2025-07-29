@@ -25,6 +25,9 @@ workflows:
           cd ios
           pod install
           cd ..
+      - name: List available schemes
+        script: |
+          xcodebuild -workspace ios/loscanitemapp.xcworkspace -list
       - name: Build archive
         script: |
           xcodebuild -workspace ios/*.xcworkspace \
