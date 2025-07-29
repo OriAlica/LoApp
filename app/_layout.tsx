@@ -7,10 +7,16 @@ export default function RootLayout() {
 
   useEffect(() => {
     const checkLogin = async () => {
-      const loggedIn = await AsyncStorage.getItem('isLoggedIn');
-      setIsLoggedIn(loggedIn === 'true');
-    };
-    checkLogin();
+      const stored = await AsyncStorage.getItem('isLoggedIn')
+      if (stored === null) {
+        // first‑download: leave as null
+        setIsLoggedIn(null)
+      } else {
+        // we've stored either 'true' or 'false'
+        setIsLoggedIn(stored === 'true')
+      }
+    }
+    checkLogin()
   }, []);
 
   if (isLoggedIn === null) {
@@ -18,9 +24,10 @@ export default function RootLayout() {
   }
 
   return (
-    <Stack
-      screenOptions={{ headerShown: false }}
-      initialRouteName={isLoggedIn ? '(tabs)' : '(auth)/login'}
-    />
+    <Stack screenOptions={{ headerShown: false }}>
+      {isLoggedIn
+        ? <Stack.Screen name="(tabs)" />
+        : <Stack.Screen name="(auth)/login" />}
+    </Stack>
   );
 }

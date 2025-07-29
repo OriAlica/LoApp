@@ -1,0 +1,29 @@
+workflows:
+  react-native-ios:
+    name: React Native iOS Build
+    instance_type: mac_mini_m2         
+    environment:
+      vars:
+        APP_NAME: "lo-scanitem-app"
+      node: 20.11.1
+      xcode: latest
+      cocoapods: default
+      flutter: stable
+      groups:
+        - expo-token                  
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm install -g expo-cli
+          npm ci
+      - name: Install eas-cli
+        script: npm install -g eas-cli
+      - name: Build iOS app
+        script: |
+          eas build --platform ios --profile production --non-interactive
+    artifacts:
+      - build/ios/**/*.ipa
+    publishing:
+      email:
+        recipients:
+          - maggiorealica.kartiyanta@wingscorp.com

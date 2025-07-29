@@ -3,6 +3,7 @@ import { useBorrowStore } from '@/store/borrowStore';
 import { MaterialIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect, useState } from 'react';
+
 import {
   SafeAreaView,
   ScrollView,
@@ -213,6 +214,8 @@ export default function ReturnPage() {
                   key={item.id}
                   onPress={() => handleToggleItem(item)}
                   style={{
+                    flexDirection: 'row', // add row layout to show icon + text horizontally
+                    alignItems: 'center', // vertically center
                     padding: 12,
                     marginVertical: 6,
                     borderRadius: 8,
@@ -221,6 +224,12 @@ export default function ReturnPage() {
                     borderWidth: 1,
                   }}
                 >
+                  <MaterialIcons
+                    name={isSelected ? 'check-box' : 'check-box-outline-blank'}
+                    size={24}
+                    color={isSelected ? '#0f5132' : '#6c757d'}
+                    style={{ marginRight: 12 }}
+                  />
                   <Text style={{ color: isSelected ? '#0f5132' : '#212529' }}>
                     {item.name}
                   </Text>

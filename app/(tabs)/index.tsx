@@ -1,10 +1,10 @@
 import { useBorrowStore } from '@/store/borrowStore';
 import { MaterialIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useIsFocused } from '@react-navigation/native';
 import { CameraType, CameraView, useCameraPermissions } from 'expo-camera';
 import { useRouter } from 'expo-router';
 import { useEffect, useRef, useState } from 'react';
-
 import { Alert, Button, Platform, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 type Item = {
@@ -21,6 +21,7 @@ type userInType = {
 export type ScannedItem = { id: string; name: string };
 
 export default function BorrowPage() {
+  const isFocused = useIsFocused();
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [scannedItems, setScannedItems] = useState<ScannedItem[]>([]);
@@ -271,6 +272,7 @@ export default function BorrowPage() {
   return (
     <View style={styles.container}>
       <CameraView
+        key={String(isFocused)}
         style={styles.camera}
         facing={facing}
         barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
