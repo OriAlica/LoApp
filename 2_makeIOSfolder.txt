@@ -1,7 +1,7 @@
 workflows:
-  react-native-ios:
-    name: React Native iOS Build
-    instance_type: mac_mini_m2         
+  generate-ios-folder:
+    name: Generate iOS folder
+    instance_type: mac_mini_m2
     environment:
       vars:
         APP_NAME: "lo-scanitem-app"
@@ -10,7 +10,7 @@ workflows:
       cocoapods: default
       flutter: stable
       groups:
-        - expo-token                  
+        - expo-token
     scripts:
       - name: Install dependencies
         script: |
@@ -18,11 +18,11 @@ workflows:
           npm ci
       - name: Install eas-cli
         script: npm install -g eas-cli
-      - name: Build iOS app
+      - name: Generate iOS native folder
         script: |
-          eas build --platform ios --profile production --non-interactive
+          npx expo prebuild --platform ios
     artifacts:
-      - build/ios/**/*.ipa
+      - ios/**/*
     publishing:
       email:
         recipients:

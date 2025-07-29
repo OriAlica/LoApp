@@ -1,43 +1,48 @@
 workflows:
-  react-native-ios:
-    name: React Native iOS Build (Native Xcode)
+  build-ios-ipa:
+    name: Build iOS IPA without App Store credentials
     instance_type: mac_mini_m2
     environment:
       vars:
         APP_NAME: "lo-scanitem-app"
+        BUNDLE_ID: "com.maggiore.loscanitemapp"
       node: 20.11.1
       xcode: latest
       cocoapods: default
+      flutter: stable
+      groups:
+        - expo-token   # if you need EXPO_TOKEN to fetch private packages, otherwise remove
     scripts:
-      - name: Install node modules and CocoaPods
+      - name: Install dependencies
         script: |
+          npm install -g expo-cli eas-cli
           npm ci
+      - name: Generate iOS native project
+        script: |
+          npx expo prebuild --platform ios
+      - name: Install CocoaPods
+        script: |
           cd ios
           pod install
-      - name: Build .ipa with Xcode
+          cd ..
+      - name: Build archive
         script: |
-          cd ios
-
-          echo "🔍 Listing schemes..."
-          xcodebuild -list -workspace loscanitemapp.xcworkspace
-
-          echo "🚧 Archiving project..."
-          xcodebuild \
-            -workspace loscanitemapp.xcworkspace \
-            -scheme loscanitemapp \
-            -configuration Release \
-            -sdk iphoneos \
-            -archivePath $CM_BUILD_DIR/build/loscanitemapp.xcarchive \
-            clean archive
-
-          echo "📦 Exporting .ipa..."
-          xcodebuild \
-            -exportArchive \
-            -archivePath $CM_BUILD_DIR/build/loscanitemapp.xcarchive \
-            -exportOptionsPlist exportOptions.plist \
-            -exportPath $CM_BUILD_DIR/build/ios
+          xcodebuild -workspace ios/*.xcworkspace \
+                     -scheme $APP_NAME \
+                     -sdk iphoneos \
+                     -configuration Release \
+                     -allowProvisioningUpdates \
+                     -archivePath $CM_BUILD_DIR/build/$APP_NAME.xcarchive \
+                     clean archive
+      - name: Export .ipa
+        script: |
+          # Use exportOptions.plist with method "development" or "ad-hoc"
+          xcodebuild -exportArchive \
+                     -archivePath $CM_BUILD_DIR/build/$APP_NAME.xcarchive \
+                     -exportOptionsPlist ios/exportOptions.plist \
+                     -exportPath $CM_BUILD_DIR/build/ipa
     artifacts:
-      - build/ios/**/*.ipa
+      - build/ipa/*.ipa
     publishing:
       email:
         recipients:
