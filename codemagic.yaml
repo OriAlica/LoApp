@@ -16,18 +16,25 @@ workflows:
           pod install
       - name: Build .ipa with Xcode
         script: |
+          cd ios
+
+          echo "🔍 Listing schemes..."
+          xcodebuild -list -workspace loscanitemapp.xcworkspace
+
+          echo "🚧 Archiving project..."
           xcodebuild \
-            -workspace ios/loscanitemapp.xcworkspace \
+            -workspace loscanitemapp.xcworkspace \
             -scheme loscanitemapp \
             -configuration Release \
             -sdk iphoneos \
             -archivePath $CM_BUILD_DIR/build/loscanitemapp.xcarchive \
             clean archive
 
+          echo "📦 Exporting .ipa..."
           xcodebuild \
             -exportArchive \
             -archivePath $CM_BUILD_DIR/build/loscanitemapp.xcarchive \
-            -exportOptionsPlist ios/exportOptions.plist \
+            -exportOptionsPlist exportOptions.plist \
             -exportPath $CM_BUILD_DIR/build/ios
     artifacts:
       - build/ios/**/*.ipa
